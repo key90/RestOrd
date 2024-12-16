@@ -1,3 +1,5 @@
+const apiUrl = '/api/server';
+
 document.addEventListener('DOMContentLoaded', () => {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
