@@ -1,112 +1,26 @@
-document.addEventListener('DOMContentLoaded', () => {
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+document.querySelector('#orderForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-  // Обработчик добавления в корзину на странице меню
-  const addToCartButtons = document.querySelectorAll('.add-to-cart');
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', event => {
-      const dishElement = event.target.closest('.dish');
-      const dishId = dishElement.dataset.id;
-      const dishName = dishElement.dataset.name;
-      const dishPrice = parseFloat(dishElement.dataset.price);
+  const name = document.querySelector('#name').value.trim();
+  const phone = document.querySelector('#phone').value.trim();
+  const orderDetails = document.querySelector('#orderDetails').value.trim();
 
-      addToCart(dishId, dishName, dishPrice);
-    });
-  });
-
-  function addToCart(dishId, dishName, dishPrice) {
-    const existingDish = cart.find(item => item.dishId === dishId);
-
-    if (existingDish) {
-      existingDish.quantity += 1;
-    } else {
-      cart.push({ dishId, dishName, dishPrice, quantity: 1 });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`${dishName} добавлено в корзину!`);
+  if (!name || !phone || !orderDetails) {
+    alert('Заполните все поля');
+    return;
   }
 
-  if (document.getElementById('cart-container')) {
-    updateCartDisplay();
-  }
-
-  function updateCartDisplay() {
-    const cartContainer = document.getElementById('cart-container');
-    const totalContainer = document.getElementById('cart-total');
-
-    cartContainer.innerHTML = '';
-    if (cart.length === 0) {
-      cartContainer.innerHTML = '<p>Корзина пуста.</p>';
-      totalContainer.textContent = 'Итого: 0 руб.';
-      return;
-    }
-
-    let total = 0;
-    cart.forEach((item, index) => {
-      const cartItem = document.createElement('div');
-      const price = item.dishPrice * item.quantity;
-      total += price;
-
-      cartItem.innerHTML = `
-        <span>${item.dishName} - ${item.dishPrice} руб. x${item.quantity}</span>
-        <button class="remove-item" data-index="${index}">Удалить</button>
-      `;
-      cartContainer.appendChild(cartItem);
+  try {
+    const response = await fetch('/api/send-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, orderDetails }),
     });
-    totalContainer.textContent = `Итого: ${total} руб.`;
 
-    document.querySelectorAll('.remove-item').forEach(button => {
-      button.addEventListener('click', event => {
-        const index = event.target.dataset.index;
-        removeItemFromCart(index);
-      });
-    });
-  }
-
-  function removeItemFromCart(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartDisplay();
-  }
-
-  const orderForm = document.getElementById('order-form');
-  if (orderForm) {
-    orderForm.addEventListener('submit', async event => {
-      event.preventDefault();
-
-      const customerName = document.getElementById('name').value;
-      const customerPhone = document.getElementById('phone').value;
-      const customerAddress = document.getElementById('address').value;
-
-      if (!customerName || !customerPhone || !customerAddress || cart.length === 0) {
-        alert('Пожалуйста, заполните все поля и добавьте товары в корзину.');
-        return;
-      }
-
-      const orderDetails = { customerName, customerPhone, customerAddress, items: cart };
-
-      try {
-        const response = await fetch('/api/server', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderDetails)
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          alert('Ваш заказ успешно оформлен!');
-          localStorage.removeItem('cart');
-          updateCartDisplay();
-          orderForm.reset();
-        } else {
-          alert('Ошибка оформления заказа: ' + data.message);
-        }
-      } catch (error) {
-        console.error('Ошибка при отправке:', error);
-        alert(`Ошибка при отправке заказа: ${error.message}`);
-      }
-    });
+    const result = await response.text();
+    alert(result);
+  } catch (error) {
+    console.error('Ошибка при отправке заказа:', error);
+    alert('Ошибка при отправке заказа.');
   }
 });
