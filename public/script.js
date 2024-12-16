@@ -1,5 +1,3 @@
-const apiUrl = '/api/server';
-
 document.addEventListener('DOMContentLoaded', () => {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -88,10 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const orderDetails = { customerName, customerPhone, customerAddress, items: cart };
 
-      console.log('Отправляем данные на сервер:', orderDetails);  // Логируем отправляемые данные
-
       try {
-        const response = await fetch('http://localhost:3000/send-order', {
+        const response = await fetch('/api/server', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderDetails)
