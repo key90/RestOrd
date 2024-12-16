@@ -1,44 +1,40 @@
 const express = require('express');
-const cors = require('cors');
-const sendTelegramMessage = require('./sendTelegramMessage'); // Файл с функцией для отправки сообщений
+const bodyParser = require('body-parser');
+require('dotenv').config();
+const sendTelegramMessage = require('./sendTelegramMessage');
 
 const app = express();
-app.use(cors()); // Разрешить все домены
-app.use(express.json()); // Для обработки JSON
+const PORT = process.env.PORT || 3000;
 
-// Обработка POST-запроса с данными о заказе
-app.post('/api/server', async (req, res) => {
-  const { customerName, customerPhone, customerAddress, items } = req.body;
+// Middleware
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
-  // Проверка на наличие всех данных
-  if (!customerName || !customerPhone || !customerAddress || !items || items.length === 0) {
-    return res.status(400).json({ success: false, message: 'Все поля обязательны.' });
+// Обработчик маршрута
+app.post('/api/send-order', async (req, res) => {
+  const { name, phone, orderDetails } = req.body;
+
+  if (!name || !phone || !orderDetails) {
+    return res.status(400).send('Все поля должны быть заполнены.');
   }
 
-  // Формирование сообщения для Telegram
-  let orderMessage = `<b>Новый заказ:</b>\n`;
-  orderMessage += `<b>Имя:</b> ${customerName}\n`;
-  orderMessage += `<b>Телефон:</b> ${customerPhone}\n`;
-  orderMessage += `<b>Адрес:</b> ${customerAddress}\n\n`;
-  orderMessage += `<b>Товары:</b>\n`;
-
-  let totalAmount = 0;
-  items.forEach(item => {
-    orderMessage += `${item.dishName} - ${item.dishPrice} руб. x${item.quantity}\n`;
-    totalAmount += item.dishPrice * item.quantity;
-  });
-
-  orderMessage += `\n<b>Итого:</b> ${totalAmount} руб.`;
+  const message = `
+    <b>Новый заказ!</b>
+    <b>Имя:</b> ${name}
+    <b>Телефон:</b> ${phone}
+    <b>Детали заказа:</b> ${orderDetails}
+  `;
 
   try {
-    // Отправка сообщения в Telegram
-    await sendTelegramMessage(orderMessage);
-    res.json({ success: true, message: 'Заказ отправлен!' });
+    await sendTelegramMessage(message);
+    res.status(200).send('Заказ отправлен.');
   } catch (error) {
-    console.error('Ошибка при отправке в Telegram:', error);
-    res.status(500).json({ success: false, message: 'Ошибка отправки заказа в Telegram.' });
+    console.error('Ошибка при отправке:', error.message);
+    res.status(500).send('Ошибка при отправке заказа.');
   }
 });
 
-// Экспортируем серверное приложение
-module.exports = app;
+// Запуск сервера
+app.listen(PORT, () => {
+  console.log(`Сервер работает на порту ${PORT}`);
+});
