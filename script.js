@@ -1,16 +1,7 @@
-let spinButton = document.getElementById("spinButton");
-let wheel = document.querySelector(".wheel");
-let currentDegree = 0;
+let rotation = 0;
 
-spinButton.addEventListener("click", function() {
-  let randomDegree = Math.floor(Math.random() * 360) + 3600; // вращение минимум 10 полных оборотов
-  currentDegree += randomDegree;
-
-  wheel.style.transition = "transform 4s ease-out"; // плавное вращение
-  wheel.style.transform = `rotate(${currentDegree}deg)`;
-
-  // После завершения анимации удаляем transition, чтобы не замедлить повторные вращения
-  setTimeout(function() {
-    wheel.style.transition = "none";
-  }, 4000);
-});
+function rotateCircle() {
+    rotation += 45; // Увеличиваем угол на 45 градусов каждый раз при клике
+    document.querySelector('.circle').style.transform = `rotate(${rotation}deg)`; 
+    setTimeout(rotateCircle, 100); // Снова вызываем функцию, чтобы круг продолжал крутиться
+}
