@@ -1,16 +1,13 @@
-let angle = 0;
-const circle = document.getElementById('circle');
-const spinBtn = document.getElementById('spinBtn');
+document.getElementById('spinButton').addEventListener('click', function() {
+    let circle = document.getElementById('circle');
+    let currentRotation = 0;
 
-spinBtn.addEventListener('click', () => {
-    // Увеличиваем угол вращения и вращаем круг
-    const randomSpin = Math.floor(Math.random() * 360) + 360;
-    angle += randomSpin;
-    circle.style.transition = "transform 4s ease-out";
-    circle.style.transform = `rotate(${angle}deg)`;
+    // Функция для бесконечного вращения круга
+    function spin() {
+        currentRotation += 5;  // Увеличиваем угол поворота на 5 градусов
+        circle.style.transform = `rotate(${currentRotation}deg)`;
+        requestAnimationFrame(spin);  // Рекурсивный вызов для непрерывного вращения
+    }
 
-    // Останавливаем плавность анимации, чтобы при следующем клике она не сбивалась
-    setTimeout(() => {
-        circle.style.transition = "transform 0s";
-    }, 4000);
+    spin();  // Запускаем вращение
 });
