@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Колесо с подарками</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Круг с Подарками</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="wheel-container">
-      <div class="wheel">
-        <div class="section" style="transform: rotate(0deg);">Подарок 1</div>
-        <div class="section" style="transform: rotate(45deg);">Подарок 2</div>
-        <div class="section" style="transform: rotate(90deg);">Подарок 3</div>
-        <div class="section" style="transform: rotate(135deg);">Подарок 4</div>
-        <div class="section" style="transform: rotate(180deg);">Подарок 5</div>
-        <div class="section" style="transform: rotate(225deg);">Подарок 6</div>
-        <div class="section" style="transform: rotate(270deg);">Подарок 7</div>
-        <div class="section" style="transform: rotate(315deg);">Подарок 8</div>
-      </div>
+    <div class="wrapper">
+        <div class="circle" onclick="rotateCircle()">
+            <div class="section" style="background-color: #FF6347;">Фотосессия</div>
+            <div class="section" style="background-color: #FF99CC;">Лонгслив</div>
+            <div class="section" style="background-color: #FFD700;">Фен-щетка</div>
+            <div class="section" style="background-color: #32CD32;">Сэндвич</div>
+            <div class="section" style="background-color: #BA55D3;">Торт</div>
+            <div class="section" style="background-color: #4682B4;">Dagfood</div>
+            <div class="section" style="background-color: #FF4500;">Косметичка</div>
+            <div class="section" style="background-color: #00CED1;">Патефон</div>
+        </div>
     </div>
-    <button id="spinButton">Крутить</button>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
