@@ -1,13 +1,18 @@
-document.getElementById('spinButton').addEventListener('click', function() {
-    let circle = document.getElementById('circle');
-    let currentRotation = 0;
+const circle = document.getElementById('circle');
+let isSpinning = false;
 
-    // Функция для бесконечного вращения круга
-    function spin() {
-        currentRotation += 5;  // Увеличиваем угол поворота на 5 градусов
-        circle.style.transform = `rotate(${currentRotation}deg)`;
-        requestAnimationFrame(spin);  // Рекурсивный вызов для непрерывного вращения
-    }
-
-    spin();  // Запускаем вращение
+circle.addEventListener('click', () => {
+  if (!isSpinning) {
+    isSpinning = true;
+    spinCircle();
+  }
 });
+
+function spinCircle() {
+  let rotation = 0;
+
+  setInterval(() => {
+    rotation += 10;
+    circle.style.transform = `rotate(${rotation}deg)`;
+  }, 100);
+}
