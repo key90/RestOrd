@@ -1,56 +1,52 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
+body, html {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
 }
 
-.container {
-    text-align: center;
+.circle-container {
+  position: relative;
 }
 
 .circle {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 20px auto;
-    border: 5px solid #333;
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center;
+  cursor: pointer;
+  transition: transform 1s linear;
 }
 
 .section {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background-color: #fff;
-    text-align: center;
-    line-height: 150px;
-    font-size: 16px;
-    color: white;
-    transform-origin: 100% 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 0;
+  left: 50%;
+  background-color: #ff5733;
+  transform-origin: 100% 100%;
+  clip-path: polygon(100% 0, 100% 100%, 0% 100%, 0% 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  text-align: center;
 }
 
-#spinButton {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
+#circle {
+  transition: transform 1s linear;
 }
 
-#spinButton:hover {
-    background-color: #555;
-}
