@@ -24,9 +24,8 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  transform-origin: center;
   cursor: pointer;
-  transition: transform 1s linear;
+  transform-origin: center;
 }
 
 .section {
@@ -46,7 +45,7 @@ body, html {
   text-align: center;
 }
 
-#circle {
-  transition: transform 1s linear;
+@keyframes rotateCircle {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
-
