@@ -11,8 +11,6 @@ circle.addEventListener('click', () => {
 function spinCircle() {
   let rotation = 0;
 
-  setInterval(() => {
-    rotation += 10;
-    circle.style.transform = `rotate(${rotation}deg)`;
-  }, 100);
+  // Добавляем класс для анимации вращения
+  circle.style.animation = "rotateCircle 10s linear infinite";
 }
